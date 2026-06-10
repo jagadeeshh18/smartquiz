@@ -1,0 +1,20 @@
+{
+  "name": "Smart Quiz AI",
+  "short_name": "SmartQuiz",
+  "description": "AI-powered quiz generator using Google Gemini. Generate MCQs on any topic instantly.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#07090f",
+  "theme_color": "#7c6aff",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "favicon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "productivity"],
+  "screenshots": []
+}

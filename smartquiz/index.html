@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart Quiz AI — AI-Powered Quiz Generator</title>
+  <meta name="description" content="Generate intelligent multiple-choice quizzes on any topic instantly using Google Gemini AI. Test your knowledge with Smart Quiz AI." />
+  <meta name="theme-color" content="#7c6aff" />
+
+  <!-- Open Graph -->
+  <meta property="og:title"       content="Smart Quiz AI — AI-Powered Quiz Generator" />
+  <meta property="og:description" content="Generate MCQs on any topic instantly with Google Gemini AI. Free, fast & fun!" />
+  <meta property="og:type"        content="website" />
+  <meta property="og:image"       content="favicon.png" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card"        content="summary" />
+  <meta name="twitter:title"       content="Smart Quiz AI" />
+  <meta name="twitter:description" content="AI-powered quiz generator — test any topic in seconds!" />
+
+  <!-- PWA -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Smart Quiz AI" />
+  <link rel="apple-touch-icon" href="favicon.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="icon" type="image/png" href="favicon.png" />
+</head>
+<body>
+
+  <!-- Confetti Container -->
+  <div id="confetti-container" class="confetti-container" aria-hidden="true"></div>
+
+  <!-- Animated Background -->
+  <div class="bg-orbs" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+    <div class="orb orb-4"></div>
+  </div>
+
+  <div class="app-container" id="app">
+
+    <!-- ═══════════════ HOME SCREEN ═══════════════ -->
+    <section class="screen active" id="screen-home">
+      <div class="home-wrapper">
+
+        <!-- Header -->
+        <header class="home-header">
+          <div class="logo-badge">
+            <span class="logo-icon">⚡</span>
+            <span class="logo-text">Smart Quiz <span class="gradient-text">AI</span></span>
+          </div>
+          <div class="powered-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" stroke="url(#gemGrad)" stroke-width="2" stroke-linecap="round"/>
+              <defs><linearGradient id="gemGrad" x1="0" y1="0" x2="24" y2="24"><stop stop-color="#7c6aff"/><stop offset="1" stop-color="#06b6d4"/></linearGradient></defs>
+            </svg>
+            Powered by Gemini
+          </div>
+        </header>
+
+        <!-- Hero -->
+        <div class="hero-section">
+          <div class="hero-tag">🎯 AI Quiz Generator</div>
+          <h1 class="hero-title">
+            Master Any Topic<br />
+            <span class="gradient-text">Instantly</span>
+          </h1>
+          <p class="hero-subtitle">
+            Enter any subject and Gemini AI crafts a tailored 5-question quiz with expert explanations — in seconds.
+          </p>
+        </div>
+
+        <!-- Input Card -->
+        <div class="input-card glass-card">
+          <label class="input-label" for="topic-input">
+            <span class="label-icon">📚</span> Enter Your Topic
+          </label>
+          <div class="input-group">
+            <input
+              type="text"
+              id="topic-input"
+              class="topic-input"
+              placeholder="e.g. Python, DBMS, Arrays, OOPs…"
+              autocomplete="off"
+              spellcheck="false"
+              maxlength="80"
+            />
+            <button class="generate-btn" id="generate-btn" onclick="startQuiz()">
+              <span class="btn-text">Generate Quiz</span>
+              <span class="btn-icon">→</span>
+            </button>
+          </div>
+          <p class="input-hint" id="input-error" role="alert"></p>
+
+          <!-- Topic Chips -->
+          <div class="suggestion-section">
+            <span class="suggestion-label">Quick topics</span>
+            <div class="suggestion-chips">
+              <button class="chip" onclick="setTopic('Python')">🐍 Python</button>
+              <button class="chip" onclick="setTopic('DBMS')">🗄️ DBMS</button>
+              <button class="chip" onclick="setTopic('Data Structures')">📊 Data Structures</button>
+              <button class="chip" onclick="setTopic('OOPs')">🧩 OOPs</button>
+              <button class="chip" onclick="setTopic('JavaScript')">⚡ JavaScript</button>
+              <button class="chip" onclick="setTopic('Machine Learning')">🤖 ML</button>
+              <button class="chip" onclick="setTopic('Operating Systems')">💻 OS</button>
+              <button class="chip" onclick="setTopic('Computer Networks')">🌐 Networks</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Demo Mode -->
+        <div class="demo-card glass-card">
+          <div class="demo-header">
+            <span class="demo-icon">🎮</span>
+            <div>
+              <div class="demo-title">Try Demo Mode</div>
+              <div class="demo-subtitle">No API key needed — start instantly</div>
+            </div>
+          </div>
+          <div class="demo-btns">
+            <button class="demo-btn" onclick="loadDemo('python')">🐍 Python Quiz</button>
+            <button class="demo-btn" onclick="loadDemo('dsa')">📊 DSA Quiz</button>
+          </div>
+        </div>
+
+        <!-- API Key Card -->
+        <div class="api-card glass-card">
+          <div class="api-header">
+            <span>🔑</span>
+            <span class="api-title">Gemini API Key</span>
+            <button class="api-toggle" id="api-toggle-btn" onclick="toggleApiInput()">Configure</button>
+          </div>
+          <div class="api-input-wrapper" id="api-input-wrapper" style="display:none">
+            <input type="password" id="api-key-input" class="api-input" placeholder="Enter your Gemini API key…" />
+            <button class="api-save-btn" onclick="saveApiKey()">Save Key</button>
+            <p class="api-hint">Get your free key at <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer" class="api-link">Google AI Studio ↗</a></p>
+          </div>
+          <div class="api-status" id="api-status"></div>
+        </div>
+
+        <!-- History Section -->
+        <div class="history-section glass-card" id="history-section" style="display:none">
+          <div class="history-header">
+            <span class="history-icon">📈</span>
+            <span class="history-title">Recent Quizzes</span>
+          </div>
+          <div class="history-list" id="history-list"></div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="stats-row">
+          <div class="stat-item glass-card">
+            <div class="stat-num">5</div>
+            <div class="stat-label">Questions</div>
+          </div>
+          <div class="stat-item glass-card">
+            <div class="stat-num">4</div>
+            <div class="stat-label">Options Each</div>
+          </div>
+          <div class="stat-item glass-card">
+            <div class="stat-num">AI</div>
+            <div class="stat-label">Explanations</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════ LOADING SCREEN ═══════════════ -->
+    <section class="screen" id="screen-loading" aria-live="polite">
+      <div class="loading-wrapper">
+        <div class="loading-orb">
+          <div class="orb-ring ring-1"></div>
+          <div class="orb-ring ring-2"></div>
+          <div class="orb-ring ring-3"></div>
+          <div class="orb-core">⚡</div>
+        </div>
+        <h2 class="loading-title">Generating Your Quiz</h2>
+        <p class="loading-topic-label">Topic</p>
+        <p class="loading-topic" id="loading-topic-name"></p>
+        <div class="loading-steps">
+          <div class="step" id="step-1"><div class="step-dot active"></div><span>Analyzing topic</span></div>
+          <div class="step" id="step-2"><div class="step-dot"></div><span>Crafting questions</span></div>
+          <div class="step" id="step-3"><div class="step-dot"></div><span>Writing explanations</span></div>
+          <div class="step" id="step-4"><div class="step-dot"></div><span>Finalizing quiz</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ QUIZ SCREEN ═══════════════ -->
+    <section class="screen" id="screen-quiz">
+      <div class="quiz-wrapper">
+
+        <!-- Top Bar -->
+        <div class="quiz-top-bar">
+          <button class="back-btn" onclick="goHome()">← Home</button>
+          <div class="quiz-topic-badge" id="quiz-topic-badge"></div>
+          <div class="quiz-right-badges">
+            <div class="streak-badge" id="streak-display">🔥 0</div>
+            <div class="quiz-timer-display" id="quiz-timer">⏱ <span id="timer-val">0</span>s</div>
+          </div>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-container">
+          <div class="progress-info">
+            <span class="q-counter" id="q-counter">Question 1 of 5</span>
+            <span class="q-score-live" id="q-score-live">Score: 0</span>
+          </div>
+          <div class="progress-bar-track" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+            <div class="progress-bar-fill" id="progress-bar"></div>
+          </div>
+          <div class="progress-dots" id="progress-dots" aria-hidden="true"></div>
+        </div>
+
+        <!-- Question Card -->
+        <div class="question-card glass-card" id="question-card">
+          <div class="q-card-meta">
+            <div class="q-number-badge" id="q-number-badge">Q1</div>
+            <div class="q-difficulty-badge" id="q-difficulty-badge">Easy</div>
+          </div>
+          <h2 class="question-text" id="question-text"></h2>
+          <div class="options-grid" id="options-grid" role="group" aria-label="Answer options"></div>
+
+          <!-- Feedback -->
+          <div class="answer-feedback" id="answer-feedback" style="display:none" role="alert">
+            <div class="feedback-icon" id="feedback-icon"></div>
+            <div class="feedback-text" id="feedback-text"></div>
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="quiz-nav">
+          <div class="nav-hints">
+            <div class="nav-hint" id="nav-hint">Choose an answer to continue</div>
+            <div class="keyboard-hint" id="keyboard-hint">Tip: Press A/B/C/D or 1/2/3/4 to select</div>
+          </div>
+          <button class="next-btn" id="next-btn" onclick="nextQuestion()" disabled>
+            <span id="next-btn-text">Next Question</span>
+            <span class="next-icon">→</span>
+          </button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ═══════════════ RESULT SCREEN ═══════════════ -->
+    <section class="screen" id="screen-result">
+      <div class="result-wrapper">
+
+        <!-- Score Hero -->
+        <div class="result-hero glass-card">
+          <div class="score-ring-container">
+            <svg class="score-ring" viewBox="0 0 120 120" aria-hidden="true">
+              <circle class="ring-bg"       cx="60" cy="60" r="50" />
+              <circle class="ring-progress" cx="60" cy="60" r="50"
+                id="score-ring-progress"
+                stroke-dasharray="314" stroke-dashoffset="314" />
+            </svg>
+            <div class="score-center">
+              <div class="score-num" id="score-num">0</div>
+              <div class="score-denom" id="score-denom">/ 5</div>
+            </div>
+          </div>
+          <div class="result-info">
+            <div class="result-grade" id="result-grade"></div>
+            <div class="result-pct-line">
+              <span id="pct-num">0</span>% correct
+            </div>
+            <div class="result-message" id="result-message"></div>
+            <div class="result-stats">
+              <div class="res-stat correct-stat">
+                <span class="res-stat-icon">✅</span>
+                <span class="res-stat-num" id="correct-count">0</span>
+                <span class="res-stat-label">Correct</span>
+              </div>
+              <div class="res-stat incorrect-stat">
+                <span class="res-stat-icon">❌</span>
+                <span class="res-stat-num" id="incorrect-count">0</span>
+                <span class="res-stat-label">Wrong</span>
+              </div>
+              <div class="res-stat time-stat">
+                <span class="res-stat-icon">⏱</span>
+                <span class="res-stat-num" id="time-taken">0s</span>
+                <span class="res-stat-label">Time</span>
+              </div>
+              <div class="res-stat streak-stat">
+                <span class="res-stat-icon">🔥</span>
+                <span class="res-stat-num" id="max-streak">0</span>
+                <span class="res-stat-label">Best Streak</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Review Section -->
+        <div class="review-section">
+          <div class="review-title-row">
+            <h2 class="review-title">📋 Detailed Review</h2>
+            <span class="review-hint">Click to expand · Wrong answers auto-open</span>
+          </div>
+          <div class="review-list" id="review-list"></div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="result-actions">
+          <button class="action-btn primary-action" onclick="retakeQuiz()">🔁 Retake Quiz</button>
+          <button class="action-btn share-action"   onclick="shareScore()">📤 Share Score</button>
+          <button class="action-btn secondary-action" onclick="goHome()">🏠 New Topic</button>
+        </div>
+
+      </div>
+    </section>
+
+  </div><!-- /app-container -->
+
+  <!-- Toast -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
